@@ -1,0 +1,1 @@
+# MyFullStackApp.sln
