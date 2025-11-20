@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using MyFullStackApp.API.Models;
 
@@ -28,17 +29,26 @@ namespace MyFullStackApp.API.Controllers
         }
 
         // GET: api/Employees/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<Employee>> GetEmployee(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
+            try {
 
-            if (employee == null)
-            {
-                return NotFound();
+                var employee = await _context.Employees.FindAsync(id);
+
+                if (employee == null)
+                {
+                    return NotFound();
+                }
+                return employee;
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
 
-            return employee;
+            
         }
 
         // PUT: api/Employees/5
